@@ -1,0 +1,99 @@
+# services:
+#   spark-master:
+#     image: bitnami/spark:3.5.0
+#     container_name: spark-master
+#     environment:
+#       - SPARK_MODE=master
+#       - SPARK_MASTER_HOST=spark-master
+#       - SPARK_MASTER_PORT=7077
+#       - SPARK_RPC_AUTHENTICATION_ENABLED=no
+#       - SPARK_RPC_ENCRYPTION_ENABLED=no
+#     ports:
+#       - "8080:8080"
+#       - "7077:7077"
+#     volumes:
+#       - ./data:/data
+#       - ./scripts:/app/scripts
+#       - ./configs:/app/configs
+#     command: ["/opt/bitnami/scripts/spark/run.sh"]
+
+#   spark-worker:
+#     image: bitnami/spark:3.5.0
+#     container_name: spark-worker
+#     depends_on:
+#       - spark-master
+#     environment:
+#       - SPARK_MODE=worker
+#       - SPARK_MASTER_URL=spark://spark-master:7077
+#       - SPARK_WORKER_MEMORY=1G
+#       - SPARK_WORKER_CORES=1
+#       - SPARK_RPC_AUTHENTICATION_ENABLED=no
+#       - SPARK_RPC_ENCRYPTION_ENABLED=no
+#     volumes:
+#       - ./data:/data
+#       - ./scripts:/app/scripts
+#       - ./configs:/app/configs
+#     command: ["/opt/bitnami/scripts/spark/run.sh"]
+
+#   mongo:
+#     image: mongo:7
+#     container_name: mongo
+#     environment:
+#       - MONGO_INITDB_DATABASE=analytics_db
+#     ports:
+#       - "27017:27017"
+#     volumes:
+#       - mongo_data:/data/db
+
+# volumes:
+#   mongo_data:
+
+services:
+  spark-master:
+    image: bitnamilegacy/spark:3.5.1
+    container_name: spark-master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_MASTER_HOST=spark-master
+      - SPARK_MASTER_PORT=7077
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    volumes:
+      - ./data:/data
+      - ./scripts:/app/scripts
+      - ./configs:/app/configs
+    command: ["/opt/bitnami/scripts/spark/run.sh"]
+
+  spark-worker:
+    image: bitnamilegacy/spark:3.5.1
+    container_name: spark-worker
+    depends_on:
+      - spark-master
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+    volumes:
+      - ./data:/data
+      - ./scripts:/app/scripts
+      - ./configs:/app/configs
+    command: ["/opt/bitnami/scripts/spark/run.sh"]
+
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=analytics_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
