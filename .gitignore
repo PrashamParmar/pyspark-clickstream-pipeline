@@ -216,3 +216,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Ignore Big Data and Database files
+data/
+mongo_data/
+.ivy2/
+spark-warehouse/
