@@ -1,0 +1,30 @@
+services:
+  streamlit:
+    build:
+      context: .
+      dockerfile: streamlit/Dockerfile
+    container_name: clickstream-dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      # App connects to MongoDB at localhost:27017.
+      # When running in docker, localhost refers to the same container.
+      # So we point MongoDB connection to the mongo service name.
+      - MONGO_URI=mongodb://mongo:27017/
+    depends_on:
+      - mongo
+
+  # Reuse the same Mongo service name/definition so the compose project is valid.
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=analytics_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+
